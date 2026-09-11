@@ -28,4 +28,16 @@ window.ALBUMS = [
       full: `photos/munich/full/${String(n).padStart(2, '0')}.jpg`,
     })),
   },
+  {
+    slug: 'gunzburg',
+    title: 'Günzburg',
+    country: 'Germany',
+    accent: '#f7b32b',
+    titleImage: 'assets/titles/gunzburg.png',
+    cover: 'photos/gunzburg/cover.jpg',
+    photos: [1, 2, 3, 4, 5].map(n => ({
+      thumb: `photos/gunzburg/thumb/${String(n).padStart(2, '0')}.jpg`,
+      full: `photos/gunzburg/full/${String(n).padStart(2, '0')}.jpg`,
+    })),
+  },
 ];
