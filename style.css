@@ -57,7 +57,7 @@ html, body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(14px) saturate(1.15) contrast(1.05);
+  filter: blur(4px) saturate(1.15) contrast(1.05);
   transform: scale(1.15);
   transition: background-image 0.5s ease;
 }
