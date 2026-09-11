@@ -1,10 +1,11 @@
 // Добавить новый город: 1) скопировать папку фото в photos/<slug>/{thumb,full}/
-// 2) добавить объект в этот массив. Больше ничего трогать не нужно.
+// 2) добавить объект в этот массив. accent — цвет рукописного названия города.
 window.ALBUMS = [
   {
     slug: 'straubing',
     title: 'Straubing',
     country: 'Germany',
+    accent: '#e2312b',
     cover: 'photos/straubing/full/01.jpg',
     photos: [1, 2, 3, 4, 5].map(n => ({
       thumb: `photos/straubing/thumb/${String(n).padStart(2, '0')}.jpg`,
@@ -15,6 +16,7 @@ window.ALBUMS = [
     slug: 'munich',
     title: 'Munich',
     country: 'Germany',
+    accent: '#3d7fe0',
     cover: 'photos/munich/full/01.jpg',
     photos: [1, 2, 3, 4, 5].map(n => ({
       thumb: `photos/munich/thumb/${String(n).padStart(2, '0')}.jpg`,

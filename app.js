@@ -8,6 +8,7 @@
   };
 
   const mainBg = document.getElementById('main-bg');
+  const wordmarkCountry = document.getElementById('wordmark-country');
   const cityTitle = document.getElementById('city-title');
   const cityDock = document.getElementById('city-dock');
   const dockTicks = document.getElementById('dock-ticks');
@@ -28,7 +29,9 @@
     const album = albums[index];
     if (!album) return;
     mainBg.style.backgroundImage = `url("${album.cover}")`;
+    wordmarkCountry.textContent = album.country || '';
     cityTitle.textContent = album.title;
+    document.documentElement.style.setProperty('--city-accent', album.accent || '#e2312b');
     [...dockTicks.children].forEach((el, i) => el.classList.toggle('is-active', i === index));
   }
 
