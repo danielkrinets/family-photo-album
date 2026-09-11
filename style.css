@@ -143,13 +143,44 @@ html, body {
   text-shadow: 0 3px 10px rgba(0,0,0,0.55);
 }
 
-.city-dock {
+.dock-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
-  height: 72px;
+}
+
+.dock-circle-btn {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  padding: 14px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.dock-circle-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dock-circle-btn--open {
+  background: rgba(37, 175, 68, 0.35);
+}
+
+.city-dock {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 64px;
   border-radius: 26px;
-  padding: 0 6px;
+  padding: 0 8px;
 }
 
 .dock-ticks {
@@ -162,18 +193,25 @@ html, body {
 }
 
 .dock-tick {
+  --tick-color: 255, 255, 255;
   flex: 1 1 auto;
-  height: 8px;
-  min-width: 8px;
+  height: 16px;
+  min-width: 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.25);
+  background: rgba(var(--tick-color), 0.55);
   cursor: pointer;
   transition: background 0.25s ease, flex-grow 0.25s ease;
 }
 
+/* Straubing/Munich/Günzburg color-code the dock, matching the original
+   Figma dock component; a 4th+ city repeats the 3-color cycle. */
+.dock-tick:nth-child(3n+1) { --tick-color: 255, 0, 0; }
+.dock-tick:nth-child(3n+2) { --tick-color: 40, 108, 253; }
+.dock-tick:nth-child(3n+3) { --tick-color: 255, 212, 0; }
+
 .dock-tick.is-active {
-  background: #fff;
-  flex-grow: 3;
+  background: rgb(var(--tick-color));
+  flex-grow: 4;
 }
 
 /* ---------- Screen 2: city sphere ---------- */

@@ -122,9 +122,11 @@
   });
 
   screens.main.addEventListener('click', e => {
-    if (e.target.closest('#city-dock')) return;
+    if (e.target.closest('.dock-row')) return;
     openCity(currentCityIndex);
   });
+  document.getElementById('btn-home').addEventListener('click', () => selectCity(0));
+  document.getElementById('btn-open-city').addEventListener('click', () => openCity(currentCityIndex));
   document.getElementById('btn-back-main').addEventListener('click', closeCity);
   document.getElementById('btn-close-photo').addEventListener('click', closePhoto);
 
