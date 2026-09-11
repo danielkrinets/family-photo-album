@@ -92,6 +92,22 @@ html, body {
   text-align: center;
 }
 
+.wordmark-image {
+  max-width: min(86vw, 420px);
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5));
+}
+
+.wordmark-generated {
+  display: block;
+}
+
+.wordmark-generated[hidden],
+.wordmark-image[hidden] {
+  display: none;
+}
+
 .wordmark-country {
   display: block;
   font-family: 'Anton', sans-serif;
