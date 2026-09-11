@@ -20,6 +20,8 @@
 
   let currentCityIndex = 0;
   let currentMenu = null; // active InfiniteMenu instance (lazy, one at a time)
+  let currentPhotoBlob = null;
+  let currentPhotoName = '';
 
   function showScreen(name) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -91,14 +93,33 @@
 
   function openPhoto(item) {
     photoFull.src = item.full;
+    currentPhotoName = item.full.split('/').pop();
+    currentPhotoBlob = null;
     btnDownload.href = item.full;
-    btnDownload.download = item.full.split('/').pop();
+    btnDownload.download = currentPhotoName;
+    // iOS Safari ignores the <a download> attribute for same-origin files
+    // (it just opens the image instead of saving it), so preload the blob
+    // and hand it to the native Share Sheet ("Save Image") on tap instead.
+    fetch(item.full)
+      .then(r => r.blob())
+      .then(blob => { currentPhotoBlob = blob; })
+      .catch(() => {});
     showScreen('photo');
   }
 
   function closePhoto() {
     showScreen('city');
   }
+
+  btnDownload.addEventListener('click', e => {
+    if (!currentPhotoBlob || !navigator.canShare) return;
+    const file = new File([currentPhotoBlob], currentPhotoName, {
+      type: currentPhotoBlob.type || 'image/jpeg',
+    });
+    if (!navigator.canShare({ files: [file] })) return;
+    e.preventDefault();
+    navigator.share({ files: [file] }).catch(() => {});
+  });
 
   screens.main.addEventListener('click', e => {
     if (e.target.closest('#city-dock')) return;
