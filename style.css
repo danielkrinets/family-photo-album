@@ -57,8 +57,8 @@ html, body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(4px) saturate(1.15) contrast(1.05);
-  transform: scale(1.15);
+  filter: blur(1px) saturate(1.15) contrast(1.05);
+  transform: scale(1.08);
   transition: background-image 0.5s ease;
 }
 
@@ -143,6 +143,74 @@ html, body {
   text-shadow: 0 3px 10px rgba(0,0,0,0.55);
 }
 
+/* ---------- Inline expandable gallery ---------- */
+
+.gallery-wrap {
+  position: fixed;
+  left: 6%;
+  right: 6%;
+  top: 30%;
+  bottom: 17%;
+  border-radius: 32px;
+  overflow: hidden;
+  background: rgba(10, 10, 14, 0.4);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+  transition: left 0.45s cubic-bezier(.22,.9,.32,1), right 0.45s cubic-bezier(.22,.9,.32,1),
+    top 0.45s cubic-bezier(.22,.9,.32,1), bottom 0.45s cubic-bezier(.22,.9,.32,1),
+    border-radius 0.45s ease;
+  z-index: 5;
+}
+
+.gallery-wrap.expanded {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0;
+  z-index: 40;
+}
+
+.infinite-menu-container {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.infinite-menu-container canvas {
+  border-radius: inherit;
+}
+
+.icon-btn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 20px) + 12px);
+  left: 16px;
+  z-index: 45;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20,20,24,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn[hidden] {
+  display: none;
+}
+
+.close-btn {
+  left: auto;
+  right: 16px;
+}
+
+/* ---------- Dock ---------- */
+
 .dock-row {
   display: flex;
   align-items: center;
@@ -154,15 +222,15 @@ html, body {
 
 .dock-circle-btn {
   flex: 0 0 auto;
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   border: none;
-  padding: 14px;
+  padding: 16px;
   background: rgba(255,255,255,0.18);
   backdrop-filter: blur(14px) saturate(1.4);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
 .dock-circle-btn img {
@@ -178,29 +246,29 @@ html, body {
 .city-dock {
   flex: 1 1 auto;
   min-width: 0;
-  height: 64px;
-  border-radius: 26px;
-  padding: 0 8px;
+  height: 72px;
+  border-radius: 36px;
+  padding: 0 12px;
 }
 
 .dock-ticks {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   height: 100%;
 }
 
 .dock-tick {
   --tick-color: 255, 255, 255;
-  flex: 1 1 auto;
-  height: 16px;
-  min-width: 16px;
+  flex: 0 0 26px;
+  height: 26px;
   border-radius: 999px;
-  background: rgba(var(--tick-color), 0.55);
+  background: linear-gradient(180deg, rgba(var(--tick-color), 1), rgba(var(--tick-color), 0.72));
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.55), inset 0 -3px 4px rgba(0,0,0,0.3);
   cursor: pointer;
-  transition: background 0.25s ease, flex-grow 0.25s ease;
+  transition: flex-grow 0.3s ease, background 0.3s ease;
 }
 
 /* Straubing/Munich/Günzburg color-code the dock, matching the original
@@ -210,39 +278,7 @@ html, body {
 .dock-tick:nth-child(3n+3) { --tick-color: 255, 212, 0; }
 
 .dock-tick.is-active {
-  background: rgb(var(--tick-color));
-  flex-grow: 4;
-}
-
-/* ---------- Screen 2: city sphere ---------- */
-
-.infinite-menu-container {
-  position: absolute;
-  inset: 0;
-}
-
-.icon-btn {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 20px) + 12px);
-  left: 16px;
-  z-index: 5;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(20,20,24,0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #fff;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-btn {
-  left: auto;
-  right: 16px;
+  flex: 1 1 auto;
 }
 
 /* ---------- Screen 3: fullscreen photo ---------- */
@@ -252,6 +288,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 60;
 }
 
 .photo-full {

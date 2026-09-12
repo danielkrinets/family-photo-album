@@ -889,6 +889,9 @@ void main() {
     window.addEventListener('resize', handleResize);
 
     return {
+      resize() {
+        sketch.resize();
+      },
       destroy() {
         sketch.stop();
         btnEl.removeEventListener('click', handleClick);
