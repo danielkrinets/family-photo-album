@@ -142,7 +142,7 @@ html, body {
   text-shadow: 0 3px 10px rgba(0,0,0,0.55);
 }
 
-/* ---------- Inline expandable gallery ---------- */
+/* ---------- Gallery preview ---------- */
 
 .gallery-wrap {
   position: fixed;
@@ -152,23 +152,10 @@ html, body {
   bottom: 17%;
   border-radius: 32px;
   overflow: hidden;
-  /* No background of its own — in the mini preview the page's blurred
-     cover photo shows through underneath it. Expanded, the canvas below
-     gets the current city's photo as its own backdrop instead. */
+  /* No background of its own — the page's blurred cover photo shows
+     through underneath it. */
   box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
-  transition: left 0.45s cubic-bezier(.22,.9,.32,1), right 0.45s cubic-bezier(.22,.9,.32,1),
-    top 0.45s cubic-bezier(.22,.9,.32,1), bottom 0.45s cubic-bezier(.22,.9,.32,1),
-    border-radius 0.45s ease;
   z-index: 5;
-}
-
-.gallery-wrap.expanded {
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  border-radius: 0;
-  z-index: 40;
 }
 
 .gallery-canvas {
@@ -231,10 +218,7 @@ html, body {
   border-radius: 50%;
   border: none;
   padding: 18px;
-  /* Same fill as Figma's Rectangle 19/24 (#D9D9D9 @ 20%), applied as a
-     plain color instead of an <img> background — an SVG background-image
-     here was rendering opaque on some setups instead of translucent. */
-  background: rgba(217, 217, 217, 0.2);
+  background: rgba(217, 217, 217, 0.4);
   backdrop-filter: blur(18px) saturate(1.6);
   -webkit-backdrop-filter: blur(18px) saturate(1.6);
   box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);

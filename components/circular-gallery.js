@@ -380,6 +380,10 @@ class App {
     if (this.renderer?.gl?.canvas?.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }
+    // Explicitly free the WebGL context instead of waiting on GC — this
+    // component gets torn down and rebuilt on every city switch, and
+    // browsers cap how many live contexts a page may hold at once.
+    this.renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();
   }
 }
 
@@ -426,6 +430,9 @@ export function createCircularGallery(container, items, options = {}) {
   return {
     resize() {
       app.onResize();
+    },
+    getCenteredItem() {
+      return app.getCenteredItem();
     },
     destroy() {
       container.removeEventListener('pointerdown', onDown);

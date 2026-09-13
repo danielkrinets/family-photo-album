@@ -11,9 +11,7 @@ const wordmarkCountry = document.getElementById('wordmark-country');
 const cityTitle = document.getElementById('city-title');
 const cityDock = document.getElementById('city-dock');
 const dockTicks = document.getElementById('dock-ticks');
-const galleryWrap = document.getElementById('gallery-wrap');
 const galleryCanvas = document.getElementById('gallery-canvas');
-const btnCollapseGallery = document.getElementById('btn-collapse-gallery');
 const photoFull = document.getElementById('photo-full');
 const btnDownload = document.getElementById('btn-download');
 
@@ -54,42 +52,7 @@ async function mountGallery(index) {
 
   const items = urls.map((url, i) => ({ image: url, text: `${album.title} ${i + 1}` }));
 
-  currentGallery = createCircularGallery(galleryCanvas, items, {
-    // A tap while still in the mini preview should only expand it (handled
-    // by the gallery-wrap click listener below) — not also jump straight
-    // into the fullscreen photo viewer.
-    onSelect: item => {
-      if (galleryWrap.classList.contains('expanded')) openPhoto(item);
-    },
-  });
-}
-
-// In the small preview the gallery sits over the page's own blurred photo,
-// so it stays transparent; expanded fullscreen it gets the current city's
-// cover photo as its own backdrop instead of plain black.
-function updateGalleryBackground() {
-  const album = albums[currentCityIndex];
-  if (galleryWrap.classList.contains('expanded') && album) {
-    galleryCanvas.style.backgroundImage = `url("${album.cover}")`;
-  } else {
-    galleryCanvas.style.backgroundImage = 'none';
-  }
-}
-
-function expandGallery() {
-  galleryWrap.classList.add('expanded');
-  btnCollapseGallery.hidden = false;
-  updateGalleryBackground();
-  currentGallery?.resize();
-  galleryWrap.addEventListener('transitionend', () => currentGallery?.resize(), { once: true });
-}
-
-function collapseGallery() {
-  galleryWrap.classList.remove('expanded');
-  btnCollapseGallery.hidden = true;
-  updateGalleryBackground();
-  currentGallery?.resize();
-  galleryWrap.addEventListener('transitionend', () => currentGallery?.resize(), { once: true });
+  currentGallery = createCircularGallery(galleryCanvas, items, { onSelect: openPhoto });
 }
 
 function selectCity(index) {
@@ -109,7 +72,6 @@ function selectCity(index) {
     document.documentElement.style.setProperty('--city-accent', album.accent || '#e2312b');
   }
   [...dockTicks.children].forEach((el, i) => el.classList.toggle('is-active', i === index));
-  collapseGallery();
   mountGallery(index);
 }
 
@@ -122,7 +84,7 @@ function buildDock() {
     tick.addEventListener('click', () => selectCity(i));
     dockTicks.appendChild(tick);
   });
-  createGlassSurface(cityDock, { borderRadius: 36, backgroundOpacity: 0.12 });
+  createGlassSurface(cityDock, { borderRadius: 36, backgroundOpacity: 0.32 });
 }
 
 function openPhoto(item) {
@@ -155,16 +117,10 @@ btnDownload.addEventListener('click', e => {
   navigator.share({ files: [file] }).catch(() => {});
 });
 
-galleryWrap.addEventListener('click', () => {
-  if (!galleryWrap.classList.contains('expanded')) expandGallery();
-});
-btnCollapseGallery.addEventListener('click', e => {
-  e.stopPropagation();
-  collapseGallery();
-});
 document.getElementById('btn-home').addEventListener('click', () => selectCity(0));
 document.getElementById('btn-open-city').addEventListener('click', () => {
-  galleryWrap.classList.contains('expanded') ? collapseGallery() : expandGallery();
+  const item = currentGallery?.getCenteredItem();
+  if (item) openPhoto(item);
 });
 document.getElementById('btn-close-photo').addEventListener('click', closePhoto);
 
