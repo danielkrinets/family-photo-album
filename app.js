@@ -22,16 +22,27 @@ let currentPhotoBlob = null;
 let currentPhotoName = '';
 
 // Probes photos/<slug>/photo1.jpg, photo2.jpg, ... so new photos just need
-// to be uploaded with that name — no code/data changes required.
+// to be uploaded with that name — no code/data changes required. Tries a
+// few common extensions per number so it doesn't matter if the phone/GitHub
+// upload saved it as .jpeg or .png instead of .jpg.
+const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png'];
+
 function probeExistingPhotos(slug, max = 30) {
-  const tryLoad = n =>
+  const tryExt = (n, ext) =>
     new Promise(resolve => {
       const img = new Image();
-      const url = `photos/${slug}/photo${n}.jpg`;
+      const url = `photos/${slug}/photo${n}.${ext}`;
       img.onload = () => resolve(url);
       img.onerror = () => resolve(null);
       img.src = url;
     });
+  const tryLoad = async n => {
+    for (const ext of PHOTO_EXTENSIONS) {
+      const url = await tryExt(n, ext);
+      if (url) return url;
+    }
+    return null;
+  };
   return Promise.all(Array.from({ length: max }, (_, i) => tryLoad(i + 1))).then(results =>
     results.filter(Boolean)
   );
