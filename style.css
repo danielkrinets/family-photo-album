@@ -58,7 +58,6 @@ html, body {
   background-size: cover;
   background-position: center;
   filter: blur(1px) saturate(1.15) contrast(1.05);
-  transform: scale(1.08);
   transition: background-image 0.5s ease;
 }
 
@@ -153,7 +152,9 @@ html, body {
   bottom: 17%;
   border-radius: 32px;
   overflow: hidden;
-  background: rgba(10, 10, 14, 0.4);
+  /* No background of its own — in the mini preview the page's blurred
+     cover photo shows through underneath it. Expanded, the canvas below
+     gets the current city's photo as its own backdrop instead. */
   box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
   transition: left 0.45s cubic-bezier(.22,.9,.32,1), right 0.45s cubic-bezier(.22,.9,.32,1),
     top 0.45s cubic-bezier(.22,.9,.32,1), bottom 0.45s cubic-bezier(.22,.9,.32,1),
@@ -170,14 +171,17 @@ html, body {
   z-index: 40;
 }
 
-.infinite-menu-container {
+.gallery-canvas {
   position: absolute;
   inset: 0;
   border-radius: inherit;
   overflow: hidden;
+  background: transparent;
+  background-size: cover;
+  background-position: center;
 }
 
-.infinite-menu-container canvas {
+.gallery-canvas canvas {
   border-radius: inherit;
 }
 
@@ -227,15 +231,13 @@ html, body {
   border-radius: 50%;
   border: none;
   padding: 18px;
-  background-image: url('assets/dock/circle-base.svg');
-  background-size: 100% 100%;
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  /* Same fill as Figma's Rectangle 19/24 (#D9D9D9 @ 20%), applied as a
+     plain color instead of an <img> background — an SVG background-image
+     here was rendering opaque on some setups instead of translucent. */
+  background: rgba(217, 217, 217, 0.2);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
   box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-.dock-circle-btn--open {
-  background-image: url('assets/dock/circle-base-alt.svg');
 }
 
 .dock-circle-btn img {
@@ -271,7 +273,7 @@ html, body {
   background: linear-gradient(180deg, rgba(var(--tick-color), 1), rgba(var(--tick-color), 0.72));
   box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.55), inset 0 -3px 4px rgba(0,0,0,0.3);
   cursor: pointer;
-  transition: flex-grow 0.3s ease, background 0.3s ease;
+  transition: flex-basis 0.35s cubic-bezier(.22,.9,.32,1), flex-grow 0.35s ease, background 0.3s ease;
 }
 
 /* Straubing/Munich/Günzburg color-code the dock, matching the original

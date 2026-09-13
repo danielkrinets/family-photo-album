@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Семейный фотоальбом</title>
 <link rel="stylesheet" href="components/glass-surface.css">
-<link rel="stylesheet" href="components/infinite-menu.css">
+<link rel="stylesheet" href="components/circular-gallery.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +29,7 @@
       </div>
       <div id="gallery-wrap" class="gallery-wrap">
         <button id="btn-collapse-gallery" class="icon-btn collapse-btn" aria-label="Свернуть" hidden>&#10005;</button>
-        <div id="infinite-menu-container" class="infinite-menu-container"></div>
+        <div id="gallery-canvas" class="gallery-canvas"></div>
       </div>
       <div class="dock-row">
         <button id="btn-home" class="dock-circle-btn" aria-label="В начало">
@@ -55,10 +55,8 @@
 
 </div>
 
-<script src="vendor/gl-matrix.min.js"></script>
 <script src="data/albums.js"></script>
 <script src="components/glass-surface.js"></script>
-<script src="components/infinite-menu.js"></script>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
